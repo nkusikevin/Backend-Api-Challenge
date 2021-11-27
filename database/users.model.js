@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-import { v4 as uuidv4 } from "uuid";
-const bcrypt = require("bcrypt");
+const { v4  } = require("uuid");
+const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
 	{
 		name: {
@@ -15,14 +15,29 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-        isManager: {
-            type: Boolean,
-            required: true,
-            default: false
-        },
+		isManager: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
+		verified: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
+		suspended: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
+		activated: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
 		code: {
-			type: Number,
-			default: uuidv4(),
+			type: String,
+			default: v4(),
 			required: true,
 		},
 	},
