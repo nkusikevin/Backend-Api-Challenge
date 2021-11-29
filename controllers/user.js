@@ -85,13 +85,7 @@ const updateUser = asyncHandler(async (req, res) => {
 		password,
 	});
 	if (updatedUser) {
-		res.status(200).json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			isAdmin: updatedUser.isAdmin,
-			//    token:generateToken(user._id),
-		});
+		res.status(200).json({message:"User updated successfully"});
 	} else {
 		res.status(400);
 		throw new Error("invalid user data");
