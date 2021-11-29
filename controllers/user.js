@@ -62,7 +62,45 @@ res.status(200).json({
 });
 
 
+//@desc  Update user
+//@route Put /api/users/update/:id
+//@access Private
+
+const updateUser = asyncHandler(async (req, res) => {
+	const user = await Users.findById(req.params.id);
+	if(!user){
+		res.status(404);
+		throw new Error("User not found");
+
+	}
+	const { name, email, password } = req.body;
+	const userExits = await Users.findOne({ email });
+	if (userExits) {
+		res.status(400);
+		throw new Error("User already exists ");
+	}
+	const updatedUser = await Users.findByIdAndUpdate(req.params.id, {
+		name,
+		email,
+		password,
+	});
+	if (updatedUser) {
+		res.status(200).json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+			//    token:generateToken(user._id),
+		});
+	} else {
+		res.status(400);
+		throw new Error("invalid user data");
+	}
+});
+
+
 module.exports = {
 	registerUser,
-	deleteUser
+	deleteUser,
+	updateUser,
 };
