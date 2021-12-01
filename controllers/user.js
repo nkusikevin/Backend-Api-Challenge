@@ -92,9 +92,30 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 });
 
+const searchUser = asyncHandler(async (req, res) => {	
+	const { name ,email , phoneNumber , code } = req.body;
+	const searchTerm = name || email || phoneNumber || code;
+	console.log(searchTerm);
+	const user = await Users.findOne({ searchTerm });
+	console.log(user);
+	if(!user){
+		res.status(404);
+		throw new Error("User not found");
+	}
+	res.status(200).json({
+		_id: user._id,
+		name: user.name,
+		email: user.email,
+		isAdmin: user.isAdmin,
+		//    token:generateToken(user._id),
+	});
+});
+
+
 
 module.exports = {
 	registerUser,
 	deleteUser,
 	updateUser,
+	searchUser
 };
