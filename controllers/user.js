@@ -94,9 +94,16 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const searchUser = asyncHandler(async (req, res) => {	
 	const { name ,email , phoneNumber , code } = req.body;
+	const searchQuery = req.query.searchquery;
 	const searchTerm = name || email || phoneNumber || code;
-	console.log(searchTerm);
-	const user = await Users.findOne({ searchTerm });
+	console.log(searchQuery);
+	const user = await Users.find({ 'models': {
+        $elemMatch: {
+            'name': req.query.name,
+            'email': req.query.email,
+            'phoneNumber': req.query.phoneNumber,
+			'code':req.query.code
+        } }});
 	console.log(user);
 	if(!user){
 		res.status(404);
