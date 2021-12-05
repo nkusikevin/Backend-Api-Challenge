@@ -126,10 +126,13 @@ const suspendUser = asyncHandler(async (req, res) => {
 	} else {
 		res.status(400);
 		throw new Error("invalid user data");
+	}
+});
 
 module.exports = {
 	registerUser,
 	deleteUser,
 	updateUser,
 	searchUser,
+	suspendUser
 };
