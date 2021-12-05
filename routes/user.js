@@ -4,7 +4,7 @@ const { registerUser, deleteUser, updateUser,searchUser } = require("../controll
 
 router.route("/").post(registerUser)
 router.route("/:id").delete(deleteUser).put(updateUser)
-router.route("/find/:name").get(searchUser)
+router.route("/find").get(searchUser)
 
 
 

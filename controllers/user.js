@@ -49,18 +49,16 @@ const registerUser = asyncHandler(async (req, res) => {
 //@access Private
 
 const deleteUser = asyncHandler(async (req, res) => {
-const user = await Users.findById(req.params.id);
-if(!user){
-	res.status(404);
-	throw new Error("User not found");
-}
-await Users.findByIdAndDelete(req.params.id);
-res.status(200).json({
-	message:"User deleted successfully"
-})
-
+	const user = await Users.findById(req.params.id);
+	if (!user) {
+		res.status(404);
+		throw new Error("User not found");
+	}
+	await Users.findByIdAndDelete(req.params.id);
+	res.status(200).json({
+		message: "User deleted successfully",
+	});
 });
-
 
 //@desc  Update user
 //@route Put /api/users/update/:id
@@ -68,10 +66,9 @@ res.status(200).json({
 
 const updateUser = asyncHandler(async (req, res) => {
 	const user = await Users.findById(req.params.id);
-	if(!user){
+	if (!user) {
 		res.status(404);
 		throw new Error("User not found");
-
 	}
 	const { name, email, password } = req.body;
 	const userExits = await Users.findOne({ email });
@@ -85,44 +82,39 @@ const updateUser = asyncHandler(async (req, res) => {
 		password,
 	});
 	if (updatedUser) {
-		res.status(200).json({message:"User updated successfully"});
+		res.status(200).json({ message: "User updated successfully" });
 	} else {
 		res.status(400);
 		throw new Error("invalid user data");
 	}
 });
 
-const searchUser = asyncHandler(async (req, res) => {	
-	const { name ,email , phoneNumber , code } = req.body;
-	const searchQuery = req.query.searchquery;
-	const searchTerm = name || email || phoneNumber || code;
-	console.log(searchQuery);
-	const user = await Users.find({ 'models': {
-        $elemMatch: {
-            'name': req.query.name,
-            'email': req.query.email,
-            'phoneNumber': req.query.phoneNumber,
-			'code':req.query.code
-        } }});
-	console.log(user);
-	if(!user){
+const searchUser = asyncHandler(async (req, res) => {
+	const { search } = req.body;
+	const user = await Users.find({
+		$or: [
+			{ name: search },
+			{ position: search },
+			{ phone: search },
+			{ code: search },
+			{ email: search },
+		],
+	});
+
+	if (!user) {
 		res.status(404);
 		throw new Error("User not found");
 	}
 	res.status(200).json({
-		_id: user._id,
-		name: user.name,
-		email: user.email,
-		isAdmin: user.isAdmin,
-		//    token:generateToken(user._id),
+		message: "List of employees found",
+		status: 201,
+		employees: res,
 	});
 });
-
-
 
 module.exports = {
 	registerUser,
 	deleteUser,
 	updateUser,
-	searchUser
+	searchUser,
 };
