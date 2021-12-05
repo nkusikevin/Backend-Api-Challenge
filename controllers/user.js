@@ -108,7 +108,7 @@ const searchUser = asyncHandler(async (req, res) => {
 	res.status(200).json({
 		message: "List of employees found",
 		status: 201,
-		employees: res,
+		employees: user,
 	});
 });
 
