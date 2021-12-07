@@ -6,7 +6,7 @@ const Token = require("../database/tokens.model");
 const crypto = require("crypto-js");
 
 //@desc Register newuser
-//@route Post /api/users/register
+//@route Post /api/manager/register
 //@access Public
 const registerManager = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body;
@@ -19,6 +19,7 @@ const registerManager = asyncHandler(async (req, res) => {
 		name,
 		email,
 		password,
+        isManager:true
 	});
 
 	if (user) {

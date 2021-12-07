@@ -1,21 +1,37 @@
 const mongoose = require("mongoose");
-const { v4  } = require("uuid");
+const codeGenerator = require("../utils/codeGenerator");
 const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
 	{
 		name: {
+			desc: "The user's name.",
+			trim: true,
+			type: String,
+			required: true,
+		},
+		code: {
+			desc: "The user's generated code.",
+			trim: true,
+			type: String,
+			required: true,
+			unique: true,
+		},
+		phone: {
+			desc: "The user's phone.",
+			trim: true,
 			type: String,
 			required: true,
 		},
 		email: {
+			desc: "The user's email address.",
+			trim: true,
 			type: String,
-			required: true,
-		},
-		password: {
-			type: String,
+			index: true,
+			unique: true,
 			required: true,
 		},
 		isManager: {
+			desc: "Manager's position",
 			type: Boolean,
 			required: true,
 			default: false,
@@ -34,11 +50,6 @@ const userSchema = new mongoose.Schema(
 			type: Boolean,
 			required: true,
 			default: false,
-		},
-		code: {
-			type: String,
-			default: v4(),
-			required: true,
 		},
 	},
 	{

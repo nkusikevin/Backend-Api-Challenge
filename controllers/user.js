@@ -3,13 +3,14 @@ const generateToken = require("../utils/generateToken");
 const sendMail = require("../utils/sendMail");
 const Users = require("../database/users.model");
 const Token = require("../database/tokens.model");
-const crypto = require("crypto-js");
+const {codeGenerator} = require('../utils/codeGenerator')
 
 //@desc Register newuser
 //@route Post /api/users/register
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-	const { name, email, password } = req.body;
+	const { name, email, password,phone } = req.body;
+	const code = codeGenerator();
 	const userExits = await Users.findOne({ email });
 	if (userExits) {
 		res.status(400);
@@ -18,7 +19,9 @@ const registerUser = asyncHandler(async (req, res) => {
 	const user = await Users.create({
 		name,
 		email,
+		phone,
 		password,
+		code
 	});
 
 	if (user) {
@@ -26,8 +29,8 @@ const registerUser = asyncHandler(async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
-			isAdmin: user.isAdmin,
-			//    token:generateToken(user._id),
+			phone:user.phone,
+			code:user.code
 		});
 		let token = await new Token({
 			userId: user._id,
