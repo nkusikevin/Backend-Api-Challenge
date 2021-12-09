@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const codeGenerator = require("../utils/codeGenerator");
 const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
 	{

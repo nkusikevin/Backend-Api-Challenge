@@ -10,12 +10,12 @@ const {codeGenerator} = require('../utils/codeGenerator')
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
 	const { name, email, password,phone } = req.body;
-	const code = codeGenerator();
 	const userExits = await Users.findOne({ email });
 	if (userExits) {
 		res.status(400);
 		throw new Error("User already exists ");
 	}
+	const code = await codeGenerator();
 	const user = await Users.create({
 		name,
 		email,

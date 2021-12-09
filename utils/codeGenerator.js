@@ -1,6 +1,6 @@
-const Users  = require("../database/users.model");
+const User = require("../database/users.model");
 const asyncHandler = require("express-async-handler");
-const codeGenerator = async () => {
+const codeGenerator = asyncHandler(async () => {
 	let a = 1;
 	do {
 		let arr = [];
@@ -13,13 +13,13 @@ const codeGenerator = async () => {
 				break;
 			}
 		}
-		let txt = "KN" + arr.join("");
-		const codes = await Users.find({ code: txt });
+		let code = "KN" + arr.join("");
+		const codes = await User.findOne({ code });
 		if (codes.length < 1) {
 			a = 0;
-			return txt;
+			return code;
 		}
 	} while (a);
-};
+});
 
-module.exports = {codeGenerator}
+module.exports = { codeGenerator };
