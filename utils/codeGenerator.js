@@ -13,7 +13,9 @@ const codeGenerator = asyncHandler(async () => {
 				break;
 			}
 		}
-		let code = "KN" + arr.join("");
+		const code = "KN" + arr.join("");
+		// code.toString()
+		console.log(code);
 		const codes = await User.findOne({ code });
 		if (codes.length < 1) {
 			a = 0;
