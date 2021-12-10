@@ -3,7 +3,7 @@ const generateToken = require("../utils/generateToken");
 const sendMail = require("../utils/sendMail");
 const Users = require("../database/users.model");
 const Token = require("../database/tokens.model");
-const {codeGenerator} = require('../utils/codeGenerator')
+const codeGenerator = require('../utils/codeGenerator')
 
 //@desc Register newuser
 //@route Post /api/users/register
@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error("User already exists ");
 	}
-	const code = codeGenerator();
+	const code = await codeGenerator();
 	const user = await Users.create({
 		name,
 		email,

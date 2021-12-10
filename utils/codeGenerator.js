@@ -14,9 +14,7 @@ const codeGenerator = asyncHandler(async () => {
 			}
 		}
 		const code = "KN" + arr.join("");
-		// code.toString()
-		console.log(code);
-		const codes = await User.findOne({ code });
+		const codes = await User.find({ code: code });
 		if (codes.length < 1) {
 			a = 0;
 			return code;
@@ -24,4 +22,4 @@ const codeGenerator = asyncHandler(async () => {
 	} while (a);
 });
 
-module.exports = { codeGenerator };
+module.exports = codeGenerator ;
