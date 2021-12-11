@@ -12,7 +12,7 @@ const verifyUser = async (req, res) => {
 			token: req.params.token,
 		});
 		if (!token) return res.status(400).send("Invalid link");
-
+		
 		await User.updateOne({verified: true });
 		await Token.findByIdAndRemove(token._id);
 

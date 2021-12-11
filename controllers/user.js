@@ -94,17 +94,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const searchUser = asyncHandler(async (req, res) => {
 	const search  = req.body;
-	console.log(search)
-	const user = await Users.find({
-		$or: [
-			{ name: search },
-			{ position: search },
-			{ phone: search },
-			{ code: search },
-			{ email: search },
-		],
-	});
-
+	const user = await Users.find(search);
 	if (!user) {
 		res.status(404);
 		throw new Error("User not found");
@@ -123,7 +113,7 @@ const suspendUser = asyncHandler(async (req, res) => {
 		throw new Error("User not found");
 	}
 	const updatedUser = await Users.findByIdAndUpdate(req.params.id, {
-		isSuspended: true,
+		suspended: true,
 	});
 	if (updatedUser) {
 		res.status(200).json({ message: "User suspended successfully" });
