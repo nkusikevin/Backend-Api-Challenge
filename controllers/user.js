@@ -93,7 +93,8 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const searchUser = asyncHandler(async (req, res) => {
-	const { search } = req.body;
+	const search  = req.body;
+	console.log(search)
 	const user = await Users.find({
 		$or: [
 			{ name: search },
