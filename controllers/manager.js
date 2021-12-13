@@ -48,7 +48,6 @@ const registerManager = asyncHandler(async (req, res) => {
 	}
 });
 
-
 //@desc Login user
 //@route Post /api/users/login
 //@access Public
@@ -59,7 +58,7 @@ const loginManager = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error("User not found");
 	}
-	if (user.isVerified) {
+	if (user.verified) {
 		if (user.isManager) {
 			if (await user.matchPassword(password)) {
 				res.status(200).json({
