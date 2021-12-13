@@ -47,6 +47,46 @@ const registerManager = asyncHandler(async (req, res) => {
 		throw new Error("invalid user data");
 	}
 });
+
+
+//@desc Login user
+//@route Post /api/users/login
+//@access Public
+const loginManager = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
+	const user = await Users.findOne({ email });
+	if (!user) {
+		res.status(400);
+		throw new Error("User not found");
+	}
+	if (user.isVerified) {
+		if (user.isManager) {
+			if (await user.matchPassword(password)) {
+				res.status(200).json({
+					_id: user._id,
+					name: user.name,
+					email: user.email,
+					phone: user.phone,
+					code: user.code,
+					isManager: user.isManager,
+					isVerified: user.isVerified,
+					token: generateToken(user._id),
+				});
+			} else {
+				res.status(400);
+				throw new Error("Invalid password");
+			}
+		} else {
+			res.status(400);
+			throw new Error("You are not a manager");
+		}
+	} else {
+		res.status(400);
+		throw new Error("Please verify your email");
+	}
+});
+
 module.exports = {
 	registerManager,
+	loginManager,
 };
